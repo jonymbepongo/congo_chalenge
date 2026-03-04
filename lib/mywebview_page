@@ -69,7 +69,7 @@ class _MyWebViewState extends State<MyWebView> {
           },
         ),
       )
-      ..loadRequest(Uri.parse("http://192.168.0.194:8080")); // <-- ton URL ici
+      ..loadRequest(Uri.parse(AppName.url)); // <-- ton URL ici
   }
 
   @override
