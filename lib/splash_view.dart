@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:congo_chalenge/my_web_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'mywebview_page';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
