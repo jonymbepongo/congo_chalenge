@@ -1,32 +1,104 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'core/app/app_name.dart';
-import 'core/service/webview_service.dart';
 
-class MyWebView extends StatefulWidget {
-  const MyWebView({super.key});
+import '../core/app/app_name.dart';
+import 'core/feature/webview/controller/web_getx_controller.dart';
 
-  @override
-  State<MyWebView> createState() => _MyWebViewState();
-}
+class MyWebView extends StatelessWidget {
 
-class _MyWebViewState extends State<MyWebView> {
-  late final WebViewController controller;
+  MyWebView({super.key});
 
-  @override
-  void initState() {
-    super.initState();
-    controller = WebViewService.createController(AppName.url);
-  }
+  final WebGetXController controller =
+      Get.put(WebGetXController(AppName.url));
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Bienvenue"),
         centerTitle: true,
       ),
-      body: WebViewWidget(controller: controller),
+
+      body: Obx(() {
+
+        /// pas internet
+        if (!controller.hasInternet.value) {
+          return _noInternet();
+        }
+
+        /// erreur chargement
+        if (controller.hasError.value) {
+          return _error();
+        }
+
+        return Stack(
+          children: [
+
+            WebViewWidget(
+              controller: controller.webController,
+            ),
+
+            if (controller.isLoading.value)
+              const Center(
+                child: CircularProgressIndicator(),
+              ),
+          ],
+        );
+      }),
+    );
+  }
+
+  Widget _noInternet() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          const Icon(Icons.wifi_off, size: 80),
+
+          const SizedBox(height: 20),
+
+          const Text(
+            "Pas de connexion internet",
+            style: TextStyle(fontSize: 18),
+          ),
+
+          const SizedBox(height: 20),
+
+          ElevatedButton(
+            onPressed: controller.reloadPage,
+            child: const Text("Recharger"),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget _error() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+
+          const Icon(Icons.error_outline, size: 80),
+
+          const SizedBox(height: 20),
+
+          const Text(
+            "Impossible de charger la page",
+            style: TextStyle(fontSize: 18),
+          ),
+
+          const SizedBox(height: 20),
+
+          ElevatedButton(
+            onPressed: controller.reloadPage,
+            child: const Text("Réessayer"),
+          )
+        ],
+      ),
     );
   }
 }
