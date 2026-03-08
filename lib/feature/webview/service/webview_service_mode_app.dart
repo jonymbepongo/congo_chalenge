@@ -3,12 +3,11 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-import '../webview_injector.dart';
+class WebViewServiceModeApp {
 
-
-class WebViewService {
   static WebViewController createController(String url) {
-    // 🔹 Initialisation plateforme
+
+    /// 🔹 Initialisation plateforme
     if (WebViewPlatform.instance == null) {
       if (Platform.isIOS || Platform.isMacOS) {
         WebViewPlatform.instance = WebKitWebViewPlatform();
@@ -17,7 +16,7 @@ class WebViewService {
       }
     }
 
-    // 🔹 Création des paramètres
+    /// 🔹 Création paramètres
     late final PlatformWebViewControllerCreationParams params;
 
     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
@@ -29,27 +28,20 @@ class WebViewService {
       params = const PlatformWebViewControllerCreationParams();
     }
 
-    // 🔹 Création controller
+    /// 🔹 Création controller
     final controller =
         WebViewController.fromPlatformCreationParams(params);
 
-    // 🔹 Options Android spécifiques
+    /// 🔹 Options Android
     if (controller.platform is AndroidWebViewController) {
       AndroidWebViewController.enableDebugging(true);
       (controller.platform as AndroidWebViewController)
           .setMediaPlaybackRequiresUserGesture(false);
     }
 
-    // 🔹 Configuration générale
+    /// 🔹 Configuration simple (sans injection)
     controller
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (url) {
-            WebViewInjector.injectHideNavbarAndFooter(controller);
-          },
-        ),
-      )
       ..loadRequest(Uri.parse(url));
 
     return controller;

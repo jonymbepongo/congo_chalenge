@@ -3,7 +3,8 @@ import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../core/app/app_name.dart';
-import 'core/feature/webview/controller/web_getx_controller.dart';
+import 'core/widget/body_arrondi.dart';
+import 'feature/webview/controller/webview_getx_controller.dart';
 
 class MyWebView extends StatelessWidget {
 
@@ -21,32 +22,34 @@ class MyWebView extends StatelessWidget {
         centerTitle: true,
       ),
 
-      body: Obx(() {
+      body: BodyArrondi(
+  content: Obx(() {
 
-        /// pas internet
-        if (!controller.hasInternet.value) {
-          return _noInternet();
-        }
+    /// pas internet
+    if (!controller.hasInternet.value) {
+      return _noInternet();
+    }
 
-        /// erreur chargement
-        if (controller.hasError.value) {
-          return _error();
-        }
+    /// erreur chargement
+    if (controller.hasError.value) {
+      return _error();
+    }
 
-        return Stack(
-          children: [
+    return Stack(
+      children: [
 
-            WebViewWidget(
-              controller: controller.webController,
-            ),
+        WebViewWidget(
+          controller: controller.webController,
+        ),
 
-            if (controller.isLoading.value)
-              const Center(
-                child: CircularProgressIndicator(),
-              ),
-          ],
-        );
-      }),
+        if (controller.isLoading.value)
+          const Center(
+            child: CircularProgressIndicator(),
+          ),
+      ],
+    );
+  }),
+),
     );
   }
 

@@ -1,9 +1,10 @@
 import 'dart:async';
+
+import 'package:congo_chalenge/feature/webview/service/webview_service_mode_app.dart';
 import 'package:get/get.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
-import '../service/webview_service.dart';
 
 class WebGetXController extends GetxController {
   
@@ -31,32 +32,32 @@ class WebGetXController extends GetxController {
   /// initialisation WebView
   void _initWebView() {
 
-    webController = WebViewService.createController(url);
+    webController = WebViewServiceModeApp.createController(url);
 
     webController.setNavigationDelegate(
-  NavigationDelegate(
+      NavigationDelegate(
 
-    onPageStarted: (url) {
-      isLoading.value = true;
-    },
+        onPageStarted: (url) {
+          isLoading.value = true;
+        },
 
-    onPageFinished: (url) {
-      isLoading.value = false;
-      hasError.value = false;
-    },
+        onPageFinished: (url) {
+          isLoading.value = false;
+          hasError.value = false;
+        },
 
-    onWebResourceError: (error) {
+        onWebResourceError: (error) {
 
-      /// seulement si la page principale échoue
-         if (error.isForMainFrame == true) {
-        isLoading.value = false;
-        hasError.value = true;
-      }
+          /// seulement si la page principale échoue
+          if (error.isForMainFrame == true) {
+            isLoading.value = false;
+            hasError.value = true;
+          }
 
-    },
+        },
 
-  ),
-);
+      ),
+    );
   }
 
   /// détection internet

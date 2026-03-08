@@ -4,10 +4,15 @@ import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
 import '../webview/webview_injector.dart';
+import '../../feature/webview/service/webview_service_mode_app.dart';
 
 
 class WebViewService {
   static WebViewController createController(String url) {
+
+     if (url.contains("mode=app")) {
+    return WebViewServiceModeApp.createController(url);
+  }
     // 🔹 Initialisation plateforme
     if (WebViewPlatform.instance == null) {
       if (Platform.isIOS || Platform.isMacOS) {
