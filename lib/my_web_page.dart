@@ -17,10 +17,17 @@ class MyWebView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Bienvenue"),
-        centerTitle: true,
+  backgroundColor: Colors.transparent,
+  appBar: AppBar(
+    title: const Text("Bienvenue"),
+    centerTitle: true,
+    backgroundColor: Colors.blue, // même couleur que BodyArrondi si tu veux effet seamless
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(
+        bottom: Radius.circular(25),
       ),
+    ),
+  ),
 
       body: BodyArrondi(
   content: Obx(() {
@@ -38,8 +45,14 @@ class MyWebView extends StatelessWidget {
     return Stack(
       children: [
 
-        WebViewWidget(
-          controller: controller.webController,
+        Container(
+          decoration: const BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+    ),
+          child: WebViewWidget(
+            controller: controller.webController,
+          ),
         ),
 
         if (controller.isLoading.value)
