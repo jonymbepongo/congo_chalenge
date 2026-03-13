@@ -21,7 +21,7 @@ class _InscriptionViewState extends State<InscriptionView> {
   bool showPassword = false;
   bool loading = false;
 
-  void handleLogin() async {
+  void handleInscription() async {
 
   if (!_formKey.currentState!.validate()) return;
 
@@ -121,7 +121,7 @@ class _InscriptionViewState extends State<InscriptionView> {
                 
           onPressed: controller.isLoading.value
           ? null
-          : handleLogin,
+          : handleInscription,
                 
           child: controller.isLoading.value
           ? const SizedBox(
@@ -131,7 +131,7 @@ class _InscriptionViewState extends State<InscriptionView> {
                 strokeWidth: 2,
               ),
             )
-          : const Text("Se connecter"),
+          : const Text("S'in"),
                 
                 ))
             ],

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color primary = Color(0xFF4CAF50);     // Vert plus vif pour le contraste
+  static const Color primary = Color.fromARGB(255, 63, 66, 233);     // Vert plus vif pour le contraste
   static const Color primaryDark = Color(0xFF2E7D32); 
-  static const Color accent = Color(0xFFFFB300);      // Or pour les trophées et boutons d'action
+  static const Color secondary = Color(0xFFFFC107);     // Or pour les trophées et boutons d'action
 
   // 🌑 Thème Sombre (Le Coeur de l'application)
-  static const Color background = Color.fromARGB(255, 9, 3, 86);  // Fond principal (très sombre)
+  static const Color background = Color.fromARGB(255, 4, 1, 53);  // Fond principal (très sombre)
   static const Color surface = Color(0xFF1E1E1E);     // Fond des cartes, dialogues, inputs
   static const Color card = Color(0xFF252525);        // Légère élévation pour les listes d'artistes
 

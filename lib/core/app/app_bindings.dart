@@ -1,13 +1,13 @@
-import 'package:congo_chalenge/core/app/app_name.dart';
 import 'package:congo_chalenge/core/service/api_service.dart';
 
 import 'package:congo_chalenge/feature/auth/repository/auth_repository.dart';
 import 'package:congo_chalenge/feature/auth/controller/auth_controller.dart';
 
-import 'package:congo_chalenge/feature/webview/controller/webview_getx_controller.dart';
 import 'package:congo_chalenge/feature/webview/service/webview_service_mode_app.dart';
 
 import 'package:get/get.dart';
+
+import '../service/cache_service.dart';
 
 class AppBindings extends Bindings {
 
@@ -17,6 +17,11 @@ class AppBindings extends Bindings {
     /// ===============================
     /// 🔹 SERVICES CORE
     /// ===============================
+
+    Get.lazyPut<CacheService>(
+  () => CacheService(),
+  fenix: true,
+);
 
     Get.lazyPut<ApiService>(
       () => ApiService(),
@@ -46,7 +51,8 @@ class AppBindings extends Bindings {
     /// ===============================
 
     Get.put<AuthController>(
-  AuthController(Get.find<AuthRepository>(), Get.find<ApiService>()),
+  AuthController(Get.find<AuthRepository>(), 
+  Get.find<ApiService>(), Get.find<CacheService>()),
   permanent: true,
 );
 

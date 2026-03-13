@@ -1,16 +1,18 @@
+import 'package:congo_chalenge/bottom_nav_bar_page.dart';
 import 'package:congo_chalenge/core/app/app_model.dart';
 import 'package:congo_chalenge/core/app/routes.dart';
+import 'package:congo_chalenge/core/service/cache_service.dart';
 import 'package:get/get.dart';
 import 'package:congo_chalenge/core/service/api_service.dart';
 import 'package:congo_chalenge/core/utils/logger.dart';
 
-import '../../../core/app/app_colors.dart';
 import '../repository/auth_repository.dart';
 
 class AuthController extends GetxController {
   final AuthRepository repository;
   final ApiService api;
-  AuthController(this.repository,this.api);
+  final CacheService cache;
+  AuthController(this.repository,this.api,this.cache);
 
   RxBool isLoading = false.obs;
   Rx<UserModel?> currentUser = Rx<UserModel?>(null);
@@ -21,96 +23,85 @@ class AuthController extends GetxController {
 
   
 
-  Future<void> checkAuthStatus() async {
-    final token = await api.getToken();
+Future<void> checkAuthStatus() async {
 
-    if (token != null) {
-      // Si un token existe, on récupère le profil
-      await getProfile();
+  final token = await api.getToken();
 
-      // Redirection vers HomeView
-      Get.offAllNamed(AppRoutes.accueil);
-      AppLogger.log("Utilisateur déjà connecté, redirection vers HomeView");
-    } else {
-      // Sinon, redirection vers LoginView
-      Get.offAllNamed(AppRoutes.login);
-      AppLogger.log("Aucun utilisateur connecté, redirection vers LoginView");
+  if (token != null) {
+
+    final cachedUser = cache.getCache("user");
+    final cachedRoles = cache.getCache("roles");
+
+    if (cachedUser != null) {
+      user.value = Map<String, dynamic>.from(cachedUser);
     }
+
+    if (cachedRoles != null) {
+      roles.value = List<String>.from(cachedRoles);
+    }
+
+    // Get.offAllNamed(AppRoutes.accueil);
+    Get.offAll(() => const BottomNavBarPage(index: 0));
+
+  } else {
+
+    Get.offAllNamed(AppRoutes.login);
+
+  }
+}
+
+Future<void> login({
+  required String email,
+  required String password,
+}) async {
+
+  isLoading.value = true;
+
+  try {
+
+    final response = await repository.login(
+      email: email,
+      password: password,
+    );
+
+    final token = response["data"]["token"];
+    final userData = response["data"]["user"];
+    final rolesData = response["data"]["roles"];
+
+    final api = Get.find<ApiService>();
+    final cache = Get.find<CacheService>();
+
+    /// SAVE TOKEN
+    await api.saveToken(token);
+
+    /// USER MODEL
+    currentUser.value = UserModel.fromJson(userData);
+
+    /// ROLES
+    roles.value = List<String>.from(rolesData);
+
+    /// SAVE CACHE
+    await cache.saveCache("user", userData);
+    await cache.saveCache("roles", rolesData);
+
+    Get.offAllNamed(AppRoutes.accueil);
+
+  } catch (e) {
+
+    rethrow;
+
+  } finally {
+
+    isLoading.value = false;
+
   }
 
-  Future<void> login({required String email, required String password}) async {
-    isLoading.value = true;
-    try {
-      final response = await repository.login(email: email, password: password);
+}
 
-      final token = response["data"]["token"];
-      final userData = response["data"]["user"];
-      final rolesData = response["data"]["roles"];
-
-      await ApiService().saveToken(token);
-
-      // Désérialisation en UserModel
-      currentUser.value = UserModel.fromJson(userData);
-
-      Get.offAllNamed(AppRoutes.accueil);
-    } catch (e) {
-      rethrow;
-    } finally {
-      isLoading.value = false;
-    }
-  }
-
-  /// LOGIN
-  // Future<void> login({
-  //   required String email,
-  //   required String password,
-  // }) async {
-
-  //   isLoading.value = true;
-
-  //   try {
-
-  //     final response = await repository.login(
-  //       email: email,
-  //       password: password,
-  //     );
-
-  //     /// BACKEND RESPONSE
-  //     /// {
-  //     /// user:{},
-  //     /// token:"",
-  //     /// roles:[]
-  //     /// }
-
-  //     final token = response["data"]["token"];
-  //     final userData = response["data"]["user"];
-
-  //     /// SAVE TOKEN
-  //     await ApiService().saveToken(token);
-
-  //     /// SAVE USER
-  //     user.value = userData;
-  //     Get.snackbar("Succès", "Connexion réussie", snackPosition: SnackPosition.TOP,backgroundColor: AppColor.success);
-  //     Get.offAllNamed(AppRoutes.accueil);
-  //     AppLogger.log("Utilisateur connecté");
-
-  //   } catch (e) {
-
-  //     AppLogger.error("Erreur login controller: $e");
-  //     Get.snackbar("Erreur", "Échec de la connexion : ${e.toString()}",
-  //     snackPosition: SnackPosition.TOP,backgroundColor: AppColor.error);
-
-  //     rethrow;
-
-  //   } finally {
-
-  //     isLoading.value = false;
-  //   }
-  // }
 
   /// GET PROFILE
-
 Future<void> getProfile() async {
+
   try {
 
     final response = await repository.getProfile();
@@ -123,22 +114,36 @@ Future<void> getProfile() async {
       user.value = userData;
       roles.value = List<String>.from(rolesData);
 
+      /// SAVE CACHE
+      await cache.saveCache("user", userData);
+      await cache.saveCache("roles", rolesData);
+
       AppLogger.log("Profil chargé : $userData");
 
     }
 
   } catch (e) {
+
     AppLogger.log("Erreur getProfile: $e");
+
   }
+
 }
 
   /// LOGOUT
 
-  Future<void> logout() async {
-    await ApiService().clearToken();
+ Future<void> logout() async {
 
-    currentUser.value = null;
+  final api = Get.find<ApiService>();
+  final cache = Get.find<CacheService>();
 
-    AppLogger.log("Utilisateur déconnecté");
+  await api.clearToken();
+  await cache.clearAll();
+
+  currentUser.value = null;
+  roles.clear();
+
+  Get.offAllNamed(AppRoutes.login);
+
   }
 }

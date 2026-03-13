@@ -15,4 +15,7 @@ abstract class AppName{
   static const String errorMessagehairAfro="";
   static const String errorMessageBlurPic="";
 
+
+  static const String ImageHero = 'assets/hero-bg.jpg';
+
 }

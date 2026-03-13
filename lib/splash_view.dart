@@ -5,7 +5,6 @@ import 'package:congo_chalenge/feature/auth/page/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
-import 'package:get/get_navigation/src/extension_navigation.dart';
 
 
 

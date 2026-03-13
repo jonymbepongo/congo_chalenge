@@ -1,246 +1,107 @@
-// import 'dart:io';
+import 'package:congo_chalenge/core/app/app_colors.dart';
+import 'package:congo_chalenge/feature/home/home_view.dart';
+import 'package:flutter/material.dart';
 
-// import 'package:congo_chalenge/core/app/app_name.dart';
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:webview_flutter/webview_flutter.dart';
-// import 'package:webview_flutter_android/webview_flutter_android.dart';
-// import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+class BottomNavBarPage extends StatefulWidget {
+  final int index;
+  const BottomNavBarPage({super.key, required this.index});
 
-// class BottomNavBarPage extends StatefulWidget {
-//   const BottomNavBarPage({super.key, this.initialIndex = 0});
+  @override
+  State<BottomNavBarPage> createState() => _BottomNavBarState();
+}
 
-//   final int initialIndex;
+class _BottomNavBarState extends State<BottomNavBarPage> {
+  late int selectIndex = widget.index;
 
-//   /// A appeler depuis SplashView juste apres le delai:
-//   /// `BottomNavBarPage.openAfterSplash();`
-//   static Future<T?> openAfterSplash<T>() async {
-//     return Get.to<T>(
-//       () => const BottomNavBarPage(),
-//       preventDuplicates: true,
-//       transition: Transition.fadeIn,
-//     );
-//   }
+  // ignore: constant_identifier_names, non_constant_identifier_names
+  final List MesPages = [
+    HomeView(),
+    Center(child: Text('page d\'artiste')),
+    // null,
+    Center(child: Text('page de la competition')),
+    Center(child: Text('profile')),
+  ];
 
-//   @override
-//   State<BottomNavBarPage> createState() => _BottomNavBarPageState();
-// }
+  @override
+  Widget build(BuildContext context) {
 
-// class _BottomNavBarPageState extends State<BottomNavBarPage> {
-//   late int _currentIndex;
-//   late final List<_TabConfig> _tabs;
-//   final Map<int, _TabState> _tabStates = <int, _TabState>{};
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     _tabs = <_TabConfig>[
-//       _TabConfig(label: 'Accueil', icon: Icons.home_outlined, url: AppName.url),
-//       _TabConfig(
-//         label: 'Artiste',
-//         icon: Icons.mic_external_on_outlined,
-//         url: AppName.urlArtiste,
-//       ),
-//       _TabConfig(
-//         label: 'Competition',
-//         icon: Icons.emoji_events_outlined,
-//         url: AppName.urlCompetition,
-//       ),
-//       _TabConfig(
-//         label: 'Profil',
-//         icon: Icons.person_outline,
-//         url: _profileUrl(),
-//       ),
-//     ];
-
-//     _currentIndex = widget.initialIndex.clamp(0, _tabs.length - 1);
-//     _ensureTabReady(_currentIndex);
-//   }
-
-//   String _profileUrl() {
-//     // Compatibilite: si AppName.profil existe dans votre base, il sera utilise.
-//     try {
-//       final dynamic appName = AppName;
-//       final dynamic profil = appName.profil;
-//       if (profil is String && profil.isNotEmpty) {
-//         return profil;
-//       }
-//     } catch (_) {
-//       // Fallback sur la constante actuelle du projet.
-//     }
-//     return AppName.urlProfile;
-//   }
-
-//   void _ensureTabReady(int index) {
-//     if (_tabStates.containsKey(index)) {
-//       return;
-//     }
-
-//     final _TabConfig tab = _tabs[index];
-//     final _TabState tabState = _TabState();
-//     final WebViewController controller = _buildController(
-//       url: tab.url,
-//       onLoading: () {
-//         if (!mounted) return;
-//         setState(() {
-//           tabState.isLoading = true;
-//         });
-//       },
-//       onLoaded: () {
-//         if (!mounted) return;
-//         setState(() {
-//           tabState.isLoading = false;
-//           tabState.hasLoadedOnce = true;
-//         });
-//       },
-//       onError: () {
-//         if (!mounted) return;
-//         setState(() {
-//           tabState.isLoading = false;
-//         });
-//       },
-//     );
-
-//     tabState.controller = controller;
-//     _tabStates[index] = tabState;
-//   }
-
-//   WebViewController _buildController({
-//     required String url,
-//     required VoidCallback onLoading,
-//     required VoidCallback onLoaded,
-//     required VoidCallback onError,
-//   }) {
-//     if (WebViewPlatform.instance == null) {
-//       if (Platform.isIOS || Platform.isMacOS) {
-//         WebViewPlatform.instance = WebKitWebViewPlatform();
-//       } else {
-//         WebViewPlatform.instance = AndroidWebViewPlatform();
-//       }
-//     }
-
-//     late final PlatformWebViewControllerCreationParams params;
-//     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-//       params = WebKitWebViewControllerCreationParams(
-//         allowsInlineMediaPlayback: true,
-//         mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-//       );
-//     } else {
-//       params = const PlatformWebViewControllerCreationParams();
-//     }
-
-//     final WebViewController controller =
-//         WebViewController.fromPlatformCreationParams(params);
-
-//     if (controller.platform is AndroidWebViewController) {
-//       AndroidWebViewController.enableDebugging(true);
-//       (controller.platform as AndroidWebViewController)
-//           .setMediaPlaybackRequiresUserGesture(false);
-//     }
-
-//     controller
-//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-//       ..setNavigationDelegate(
-//         NavigationDelegate(
-//           onPageStarted: (_) => onLoading(),
-//           onPageFinished: (_) => onLoaded(),
-//           onWebResourceError: (WebResourceError error) {
-//             if (error.isForMainFrame == true) {
-//               onError();
-//             }
-//           },
-//         ),
-//       )
-//       ..loadRequest(Uri.parse(url));
-
-//     return controller;
-//   }
-
-//   void _onTabTapped(int index) {
-//     if (index == _currentIndex) return;
-//     _ensureTabReady(index);
-//     setState(() {
-//       _currentIndex = index;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final List<Widget> pages = List<Widget>.generate(_tabs.length, (int index) {
-//       final _TabState? tabState = _tabStates[index];
-//       if (tabState == null || tabState.controller == null) {
-//         return const SizedBox.shrink();
-//       }
-
-//       final bool showLoader = index == _currentIndex &&
-//           tabState.isLoading &&
-//           !tabState.hasLoadedOnce;
-
-//       return Stack(
-//         children: <Widget>[
-//           WebViewWidget(controller: tabState.controller!),
-//           if (showLoader)
-//             const Center(
-//               child: CircularProgressIndicator(),
-//             ),
-//         ],
-//       );
-//     });
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(_tabs[_currentIndex].label),
-//         centerTitle: true,
-//         shape: const RoundedRectangleBorder(
-//           borderRadius: BorderRadius.vertical(
-//             bottom: Radius.circular(25),
-//           ),
-//         ),
-//       ),
-//       body: Container(
-//         decoration: const BoxDecoration(
-//           color: Colors.white,
-//           borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-//         ),
-//         child: ClipRRect(
-//           borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
-//           child: IndexedStack(
-//             index: _currentIndex,
-//             children: pages,
-//           ),
-//         ),
-//       ),
-//       bottomNavigationBar: BottomNavigationBar(
-//         currentIndex: _currentIndex,
-//         onTap: _onTabTapped,
-//         type: BottomNavigationBarType.fixed,
-//         items: _tabs
-//             .map(
-//               (_TabConfig tab) => BottomNavigationBarItem(
-//                 icon: Icon(tab.icon),
-//                 label: tab.label,
-//               ),
-//             )
-//             .toList(growable: false),
-//       ),
-//     );
-//   }
-// }
-
-// class _TabConfig {
-//   const _TabConfig({
-//     required this.label,
-//     required this.icon,
-//     required this.url,
-//   });
-
-//   final String label;
-//   final IconData icon;
-//   final String url;
-// }
-
-// class _TabState {
-//   WebViewController? controller;
-//   bool isLoading = true;
-//   bool hasLoadedOnce = false;
-// }
+    return Scaffold(
+      body: MesPages.elementAt(selectIndex),
+      bottomNavigationBar: Stack(
+        clipBehavior: Clip.none,
+        //fit: StackFit.expand,
+        alignment: Alignment.center,
+        children: [
+          BottomNavigationBar(
+            currentIndex: selectIndex,
+            selectedItemColor: AppColor.secondary,
+            type: BottomNavigationBarType.fixed,
+            unselectedLabelStyle: TextStyle(color: Colors.grey[800]),
+            showUnselectedLabels: true,
+            backgroundColor: AppColor.primary,
+            onTap: (valeur) {
+              setState(() {
+                selectIndex = valeur;
+              });
+            },
+            items: [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home), // Changé de category_rounded à category
+                label: 'Acuueil',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.category_rounded),
+                label: 'Artiste',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.analytics_rounded),
+                label: 'competition',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.person_rounded,
+                ), // person_rounded au lieu de person_3_rounded
+                label: 'mon profil',
+              ),
+            ],
+          ),
+          // Positioned(
+          //   top: -18,
+          //   left: 0,
+          //   right: 0,
+          //   child: Center(
+          //       child: GestureDetector(
+          //         onTap:()=> Get.to(()=>AnalyseView()),
+          //         child: Container(
+          //           height: 65,
+          //           width:66,
+          //           decoration: BoxDecoration(
+          //             color:Colors.white,
+          //             gradient: LinearGradient(colors: [
+          //               Colors.green.shade300,
+          //               AppColors.primarydark
+          //             ],
+          //             tileMode: TileMode.mirror,
+          //             begin: Alignment.topCenter
+          //             ),
+          //           //  image: DecorationImage(fit: BoxFit.cover,
+          //           //  filterQuality: FilterQuality.low,
+          //           // opacity:0.3,
+          //           // image: AssetImage(AppName.fondAssetPath)
+          //           //  ),
+          //            shape: BoxShape.circle,
+          //            border: Border.all(color: couleurP),
+          //            boxShadow:[
+          //             BoxShadow(blurRadius: 2,color:Colors.grey.shade600)
+          //            ]
+          //           ),
+          //           child: Icon(Icons.photo_camera,size: 31,color: AppColors.background),
+          //          ),
+          //       )
+          //     ),
+          //   ),
+        ],
+      ),
+    );
+  }
+}

@@ -1,6 +1,7 @@
 import 'package:congo_chalenge/core/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'core/app/app_bindings.dart';
 import 'core/app/app_colors.dart';
 import 'core/app/app_name.dart';
@@ -8,7 +9,7 @@ import 'core/app/routes.dart';
 
 void main() async {
    WidgetsFlutterBinding.ensureInitialized();
-
+  await GetStorage.init();
   final apiService = ApiService();
   await apiService.checkBackendConnection();
   
@@ -46,7 +47,7 @@ class _MyAppState extends State<MyApp> {
         
         colorScheme: const ColorScheme.dark(
           primary: AppColor.primary,
-          secondary: AppColor.accent, 
+          secondary: AppColor.secondary, 
           surface: AppColor.background, // Définit la surface par défaut sur le background
           error: AppColor.error,
           onSurface: AppColor.textMain,
