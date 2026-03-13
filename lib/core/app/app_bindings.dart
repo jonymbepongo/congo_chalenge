@@ -45,10 +45,10 @@ class AppBindings extends Bindings {
     /// 🔹 CONTROLLERS
     /// ===============================
 
-    Get.lazyPut<AuthController>(
-      () => AuthController(Get.find<AuthRepository>()),
-      fenix: true,
-    );
+    Get.put<AuthController>(
+  AuthController(Get.find<AuthRepository>(), Get.find<ApiService>()),
+  permanent: true,
+);
 
 
 
@@ -56,9 +56,9 @@ class AppBindings extends Bindings {
     /// 🔹 WEBVIEW CONTROLLER
     /// ===============================
 
-    Get.put<WebGetXController>(
-      WebGetXController(AppName.url),
-      permanent: true,
-    );
+    // Get.put<WebGetXController>(
+    //   WebGetXController(AppName.url),
+    //   permanent: true,
+    // );
   }
 }

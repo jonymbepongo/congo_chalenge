@@ -2,14 +2,10 @@ abstract class AppName{
 
   static const String appName = 'Congo challenge';
   // static const String logoPath = 'assets/logo_napiland.png';
-  static const String ipAdresselocal = '10.249.199.200';
-  static const String ipAdresse = '192.168.0.240';
-  static const String url = "http://$ipAdresse:8080/auth?mode=app";
-  static const String urlCloud="";
-
-  static const String urlArtiste = "http://$ipAdresse:8080/artistes?mode=app";
-  static const String urlCompetition = "http://$ipAdresse:8080/competition?mode=app";
-  static const String urlProfile = "http://$ipAdresse:8080/mon-profil?mode=app";
+  static const String ipAdressecloud = '207.180.227.56';
+  static const String ipAdresse = '192.168.0.2';
+  static const String url = "http://$ipAdressecloud:8080/auth?mode=app";
+  static const String baseUrl="http://$ipAdressecloud:3001/api";
   
   // static const String leafLoading='assets/lottie/leafloading.gif';
 

@@ -1,3 +1,4 @@
+import 'package:congo_chalenge/core/service/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'core/app/app_bindings.dart';
@@ -6,8 +7,10 @@ import 'core/app/app_name.dart';
 import 'core/app/routes.dart';
 
 void main() async {
-  // Assure l'initialisation des services Flutter avant le lancement
-  WidgetsFlutterBinding.ensureInitialized();
+   WidgetsFlutterBinding.ensureInitialized();
+
+  final apiService = ApiService();
+  await apiService.checkBackendConnection();
   
   runApp(const MyApp());
 }

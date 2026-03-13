@@ -1,10 +1,12 @@
 import 'dart:async';
 
-import 'package:congo_chalenge/my_web_page.dart';
+import 'package:congo_chalenge/feature/auth/controller/auth_controller.dart';
+import 'package:congo_chalenge/feature/auth/page/auth_page.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/get_core/get_core.dart';
+import 'package:get/get_instance/src/extension_instance.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 
-import 'bottom_nav_bar_page.dart';
 
 
 class SplashView extends StatefulWidget {
@@ -15,14 +17,24 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  final AuthController authController = Get.find<AuthController>();
 
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 5), () => BottomNavBarPage.openAfterSplash());
+    startApp();
+    // Timer(const Duration(seconds: 5), ()=>Get.offAll(()=>AuthPage()));
+    
   }
 
+void startApp() async {
 
+    // attendre un peu pour afficher le splash
+    await Future.delayed(const Duration(seconds: 3));
+
+    // vérifier si utilisateur connecté
+    await authController.checkAuthStatus();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

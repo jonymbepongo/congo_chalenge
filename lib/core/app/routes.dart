@@ -1,3 +1,4 @@
+import 'package:congo_chalenge/feature/auth/page/login_view.dart';
 import 'package:congo_chalenge/feature/home/home_view.dart';
 import 'package:get/get.dart';
 
@@ -5,7 +6,7 @@ import '../../splash_view.dart';
 
 class AppRoutes {
   static const String initial = '/';
-
+  static const String login = '/login';
   static const String accueil = '/accueil';
   static const String competition = '/competition';
   static const String artiste = '/artiste';
@@ -27,13 +28,13 @@ class AppRoutes {
       transition: Transition.rightToLeft,
     ),
     
-    /*GetPage(
-      name: competition,
-      page: () => const WebViewScreen(),
+    GetPage(
+      name: login,
+      page: () => const LoginView(),
       transition: Transition.noTransition,
     ),
 
-    GetPage(
+    /*GetPage(
       name: artiste,
       page: () => const WebViewScreen(),
       transition: Transition.noTransition,

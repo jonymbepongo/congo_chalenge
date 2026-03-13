@@ -39,6 +39,8 @@ dependencies:
   webview_flutter_android: ^4.10.13
   webview_flutter_wkwebview: ^3.23.8
   connectivity_plus: ^7.0.0
+  dio: ^5.9.2
+  flutter_secure_storage: ^10.0.0
 
 dev_dependencies:
   flutter_test:
@@ -63,8 +65,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #   - images/a_dot_burr.jpeg
+  assets:
+    - assets\hero-bg.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

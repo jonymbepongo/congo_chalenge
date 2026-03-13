@@ -1,62 +1,62 @@
-import 'dart:io';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+// import 'dart:io';
+// import 'package:webview_flutter/webview_flutter.dart';
+// import 'package:webview_flutter_android/webview_flutter_android.dart';
+// import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
-import '../webview/webview_injector.dart';
-import '../../feature/webview/service/webview_service_mode_app.dart';
+// import '../webview/webview_injector.dart';
+// import '../../feature/webview/service/webview_service_mode_app.dart';
 
 
-class WebViewService {
-  static WebViewController createController(String url) {
+// class WebViewService {
+//   static WebViewController createController(String url) {
 
-     if (url.contains("mode=app")) {
-    return WebViewServiceModeApp.createController(url);
-  }
-    // 🔹 Initialisation plateforme
-    if (WebViewPlatform.instance == null) {
-      if (Platform.isIOS || Platform.isMacOS) {
-        WebViewPlatform.instance = WebKitWebViewPlatform();
-      } else {
-        WebViewPlatform.instance = AndroidWebViewPlatform();
-      }
-    }
+//      if (url.contains("mode=app")) {
+//     return WebViewServiceModeApp.createController(url);
+//   }
+//     // 🔹 Initialisation plateforme
+//     if (WebViewPlatform.instance == null) {
+//       if (Platform.isIOS || Platform.isMacOS) {
+//         WebViewPlatform.instance = WebKitWebViewPlatform();
+//       } else {
+//         WebViewPlatform.instance = AndroidWebViewPlatform();
+//       }
+//     }
 
-    // 🔹 Création des paramètres
-    late final PlatformWebViewControllerCreationParams params;
+//     // 🔹 Création des paramètres
+//     late final PlatformWebViewControllerCreationParams params;
 
-    if (WebViewPlatform.instance is WebKitWebViewPlatform) {
-      params = WebKitWebViewControllerCreationParams(
-        allowsInlineMediaPlayback: true,
-        mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
-      );
-    } else {
-      params = const PlatformWebViewControllerCreationParams();
-    }
+//     if (WebViewPlatform.instance is WebKitWebViewPlatform) {
+//       params = WebKitWebViewControllerCreationParams(
+//         allowsInlineMediaPlayback: true,
+//         mediaTypesRequiringUserAction: const <PlaybackMediaTypes>{},
+//       );
+//     } else {
+//       params = const PlatformWebViewControllerCreationParams();
+//     }
 
-    // 🔹 Création controller
-    final controller =
-        WebViewController.fromPlatformCreationParams(params);
+//     // 🔹 Création controller
+//     final controller =
+//         WebViewController.fromPlatformCreationParams(params);
 
-    // 🔹 Options Android spécifiques
-    if (controller.platform is AndroidWebViewController) {
-      AndroidWebViewController.enableDebugging(true);
-      (controller.platform as AndroidWebViewController)
-          .setMediaPlaybackRequiresUserGesture(false);
-    }
+//     // 🔹 Options Android spécifiques
+//     if (controller.platform is AndroidWebViewController) {
+//       AndroidWebViewController.enableDebugging(true);
+//       (controller.platform as AndroidWebViewController)
+//           .setMediaPlaybackRequiresUserGesture(false);
+//     }
 
-    // 🔹 Configuration générale
-    controller
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (url) {
-            WebViewInjector.injectHideNavbarAndFooter(controller);
-          },
-        ),
-      )
-      ..loadRequest(Uri.parse(url));
+//     // 🔹 Configuration générale
+//     controller
+//       ..setJavaScriptMode(JavaScriptMode.unrestricted)
+//       ..setNavigationDelegate(
+//         NavigationDelegate(
+//           onPageFinished: (url) {
+//             WebViewInjector.injectHideNavbarAndFooter(controller);
+//           },
+//         ),
+//       )
+//       ..loadRequest(Uri.parse(url));
 
-    return controller;
-  }
-}
+//     return controller;
+//   }
+// }
