@@ -1,3 +1,4 @@
+import 'package:congo_chalenge/feature/home/home_view.dart';
 import 'package:get/get.dart';
 
 import '../../splash_view.dart';
@@ -20,13 +21,13 @@ class AppRoutes {
     ),
 
     // Ces routes permettent de naviguer vers des sections précises du site web
-    /*GetPage(
+    GetPage(
       name: accueil,
-      page: () => const WebViewScreen(),
-      transition: Transition.noTransition,
+      page: () => const HomeView(),
+      transition: Transition.rightToLeft,
     ),
     
-    GetPage(
+    /*GetPage(
       name: competition,
       page: () => const WebViewScreen(),
       transition: Transition.noTransition,
