@@ -1,4 +1,3 @@
-import 'package:congo_chalenge/bottom_nav_bar_page.dart';
 import 'package:congo_chalenge/core/app/app_model.dart';
 import 'package:congo_chalenge/core/app/routes.dart';
 import 'package:congo_chalenge/core/service/cache_service.dart';
@@ -41,7 +40,7 @@ Future<void> checkAuthStatus() async {
     }
 
     // Get.offAllNamed(AppRoutes.accueil);
-    Get.offAll(() => const BottomNavBarPage(index: 0));
+    Get.offAllNamed(AppRoutes.bottomNavBar);
 
   } else {
 

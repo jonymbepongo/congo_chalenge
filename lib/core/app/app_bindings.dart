@@ -1,4 +1,6 @@
 import 'package:congo_chalenge/core/service/api_service.dart';
+import 'package:congo_chalenge/feature/artiste/controller/artiste_controller.dart';
+import 'package:congo_chalenge/feature/artiste/repository/artiste_repository.dart';
 
 import 'package:congo_chalenge/feature/auth/repository/auth_repository.dart';
 import 'package:congo_chalenge/feature/auth/controller/auth_controller.dart';
@@ -33,8 +35,6 @@ class AppBindings extends Bindings {
       fenix: true,
     );
 
-
-
     /// ===============================
     /// 🔹 REPOSITORIES
     /// ===============================
@@ -44,7 +44,10 @@ class AppBindings extends Bindings {
       fenix: true,
     );
 
-
+  Get.lazyPut<ArtisteRepository>(
+  () => ArtisteRepository(Get.find<ApiService>()),
+  fenix: true,
+);
 
     /// ===============================
     /// 🔹 CONTROLLERS
@@ -56,7 +59,10 @@ class AppBindings extends Bindings {
   permanent: true,
 );
 
-
+Get.lazyPut<ArtisteController>(
+  () => ArtisteController(Get.find<ArtisteRepository>()),
+  fenix: true,
+);
 
     /// ===============================
     /// 🔹 WEBVIEW CONTROLLER

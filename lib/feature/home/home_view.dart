@@ -1,4 +1,5 @@
 import 'package:congo_chalenge/core/app/app_colors.dart';
+import 'package:congo_chalenge/feature/artiste/controller/artiste_controller.dart';
 import 'package:congo_chalenge/feature/artiste/widget/artiste_card.dart';
 import 'package:congo_chalenge/feature/auth/controller/auth_controller.dart';
 import 'package:flutter/material.dart';
@@ -14,6 +15,8 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   final AuthController controller = Get.find<AuthController>();
+  final ArtisteController artisteController = Get.find<ArtisteController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,16 +25,16 @@ class _HomeViewState extends State<HomeView> {
     final user=controller.user;
     // final roles=controller.roles;
 
-  if (user == null ||user.isEmpty) {
-    return const CircularProgressIndicator();
-  }
+  // if (user == null ||user.isEmpty) {
+  //   return const CircularProgressIndicator();
+  // }
 
   return 
       Stack(
         children:[
           AppBar(
             backgroundColor: AppColor.background,
-            title: Text('Bienvenue  ${user['username']}'),
+            title: Text('Bienvenue  ${user['username'] ?? 'jony'}' ),
             centerTitle: false,
             actions: [
               IconButton(
@@ -68,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF161B2E),
+                      color: Colors.black.withValues(alpha: 0.4),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -141,23 +144,54 @@ class _HomeViewState extends State<HomeView> {
                 ),
                           
                 // Grid des Artistes
-                Padding(
-                  padding: const EdgeInsets.all(12),
-                  child: GridView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 16,
-                      crossAxisSpacing: 12,
-                      childAspectRatio: 0.68,
-                    ),
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return const ArtistCard();
-                    },
-                  ),
-                ),
+                Obx(() {
+          final controller=artisteController;
+
+        /// 🔄 Loading
+        if (controller.isLoading.value) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        /// ❌ Aucun artiste
+        if (controller.artistes.isEmpty) {
+          return const Center(
+            child: Text("Aucun artiste disponible"),
+          );
+        }
+
+        /// ✅ Liste artistes
+        return GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(12),
+        
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        
+            crossAxisCount: 2,
+        
+            crossAxisSpacing: 12,
+        
+            mainAxisSpacing: 12,
+        
+            childAspectRatio: 0.75,
+        
+          ),
+        
+          itemCount: controller.artistes.length,
+        
+          itemBuilder: (context, index) {
+        
+            final artiste = controller.artistes[index];
+        
+            return ArtistCard(
+              artiste: artiste,
+            );
+        
+          },
+        );
+      }),
                           
                 const SizedBox(height: 24),
               ],

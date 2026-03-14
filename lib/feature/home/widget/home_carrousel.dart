@@ -43,7 +43,7 @@ class _HomeCarouselState extends State<HomeCarousel> {
             return _buildCarouselCard(imgList[index]);
           },
           options: CarouselOptions(
-            height: 200,
+            height: 200-60,
             viewportFraction: 0.9,
             enlargeCenterPage: true,
             enlargeFactor: 0.3,

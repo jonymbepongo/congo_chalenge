@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:congo_chalenge/feature/auth/controller/auth_controller.dart';
-import 'package:congo_chalenge/feature/auth/page/auth_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_core/get_core.dart';
 import 'package:get/get_instance/src/extension_instance.dart';
+
+import 'core/app/app_colors.dart';
+import 'core/app/app_name.dart';
 
 
 
@@ -37,44 +39,280 @@ void startApp() async {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        height: double.maxFinite,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(colors: [
-            const Color.fromARGB(255, 8, 120, 211),
-            const Color.fromARGB(255, 1, 25, 61),          
-          ],
-          tileMode: TileMode.mirror,
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter
+      body: Stack(
+        children:[ 
+          
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(image: AssetImage(AppName.ImageConcert),
+               fit: BoxFit.cover)
+            )
           ),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-              height:90,
-              width: 90,
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-              color: Colors.blue.withValues(alpha: 0.8),
-              ),
-              child: Icon(Icons.library_music_rounded,color: Colors.red.shade600,size: 50,)),
-            SizedBox(height: 10),
-            Center(
-              child: Text("Congo\nchalenge",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 35,
-                fontWeight: FontWeight.bold,
-                color: Colors.amber,
-              ),
+          Container(
+          width: double.infinity,
+          height: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.black.withValues(alpha: 0.8),
+            // gradient: LinearGradient(
+            //   // center: Alignment.topLeft,
+            //   // radius: 0.8,
+            //   colors: [
+            //     const Color.fromARGB(255, 1, 11, 29).withValues(alpha: 0.9),// Centre plus clair/accentué
+            //     const Color.fromARGB(255, 8, 4, 48).withValues(alpha: 0.3), // Bords plus foncés
+            //   ],
+            //   stops: const [0.2, 1.0],
+            //   begin: Alignment.topLeft,
+            //   end: Alignment.bottomRight,
+            //   tileMode: TileMode.mirror
+            //   // tileMode: TileMode.mirror,
+            //   // focalRadius: 5
+            // ),
+            // Dégradé radial circulaire comme demandé
+            // gradient: RadialGradient(
+            //   center: Alignment.topLeft,
+            //   radius: 0.8,
+            //   colors: [
+            //     const Color.fromARGB(255, 12, 61, 145).withValues(alpha: 0.9),// Centre plus clair/accentué
+            //     Colors.black.withValues(alpha: 0.3), // Bords plus foncés
+            //   ],
+            //   stops: const [0.2, 1.0],
+            //   // tileMode: TileMode.mirror,
+            //   focalRadius: 5
+            // ),
+          ),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(left: 25.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Espacement supérieur
+                  // SizedBox(
+                  //   height: MediaQuery.of(context).size.height * 0.26,
+                  // ),
+                  // Contenu principal centré
+                  Container(
+                    width: 100,
+                    height: 100,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
+                      image: DecorationImage(image: AssetImage(AppName.ImageLogo),fit: BoxFit.fill),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppColor.secondary.withValues(alpha: 0.2),
+                          blurRadius: 20,
+                          spreadRadius: 5,
+                        ),
+                      ],
+                    ),
+                    // child: Icon(
+                    //   Icons.mic, // Icône micro
+                    //   size: 50,
+                    //   color: AppColor.primary,
+                    // ),
+                  ),
+                  
+                  const SizedBox(height: 40),
+                  const Text(
+                    'Bienvenue',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: AppColor.secondary,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+        
+                  // Texte d'accueil "Bienvenue dans le Royaume de la Musique!"
+                  const Text(
+                    'dans la compétition Congo chalenge league !',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 20),
+      
+                  buildSpanText()
+                  
+                  // Message secondaire en lien avec le workflow
+                  
+                 
+        
+                  
+                  // Bouton "Profitez de la musique maintenant >"
+                  // Padding(
+                  //   padding: const EdgeInsets.only(right: 20),
+                  //   child: ElevatedButton(
+                  //     onPressed: () {
+                  //       // Action à définir : navigation vers la page suivante
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: AppColor.secondary,
+                  //       foregroundColor: Colors.white,
+                  //       padding: const EdgeInsets.symmetric(
+                  //         horizontal: 30,
+                  //         vertical: 12,
+                  //       ),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //       ),
+                  //       elevation: 5,
+                  //     ),
+                  //     child: const Text(
+                  //       'Decouvrez des nouvelles talents',
+                  //       style: TextStyle(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
+        
+                
+                  
+                  // Bas de page avec le lien vers les conditions
+                  // Padding(
+                  //   padding: const EdgeInsets.only(bottom: 20.0),
+                  //   child: Column(
+                  //     children: [
+                  //       const Text(
+                  //         'Ou lisez et acceptez le',
+                  //         style: TextStyle(
+                  //           color: Colors.white70,
+                  //           fontSize: 14,
+                  //         ),
+                  //       ),
+                  //       const SizedBox(height: 4),
+                  //       GestureDetector(
+                  //         onTap: () {
+                  //           // Action : ouvrir les conditions d'utilisation
+                  //         },
+                  //         child: const Text(
+                  //           'Contrat de licence d\'utilisateur final & Politique de confidentialité',
+                  //           textAlign: TextAlign.center,
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontSize: 14,
+                  //             fontWeight: FontWeight.bold,
+                  //             decoration: TextDecoration.underline,
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                ],
               ),
             ),
-          ],
+          ),
         ),
+       
+          Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: DrapeurCouleur()),
+          Positioned(
+          top: 0,
+          left: 0,
+          right: 0,
+          child: DrapeurCouleur())
+      ]),
+    );
+  }
+}
+
+Widget buildSpanText() {
+  return RichText(
+    textAlign: TextAlign.center,
+    text: TextSpan(
+      style: TextStyle(
+        fontSize: 15,
+        fontWeight: FontWeight.w400,
+        fontStyle: FontStyle.italic
+      ),
+      children: [
+        TextSpan(
+          text: 'Femme ',
+          style: TextStyle(color: AppColor.secondary),
+        ),
+        TextSpan(
+          text: ' - ',
+          style: TextStyle(color: Colors.white70),
+        ),
+        TextSpan(
+          text: 'Paix ',
+          style: TextStyle(color: Colors.blue),
+        ),
+        TextSpan(
+          text: ' - ',
+          style: TextStyle(color: Colors.white70),
+        ),
+        TextSpan(
+          text: 'Résilience',
+          style: TextStyle(color: const Color.fromARGB(255, 237, 18, 18)),
+        ),
+      ],
+    ),
+  );
+}
+
+class DrapeurCouleur extends StatelessWidget {
+  final double height;
+  final double width;
+  final Color? firstColor;
+  final Color? secondColor;
+  final Color? thirdColor;
+  
+  const DrapeurCouleur({
+    super.key,
+    this.height = 3,
+    this.width = 60,
+    this.firstColor,
+    this.secondColor,
+    this.thirdColor,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    // Couleurs par défaut
+    
+    return SizedBox(
+      height: height,
+      width: width,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Premier conteneur - AppColor.secondary
+          Expanded(
+            child: Container(
+              color: AppColor.secondary,
+            ),
+          ),
+          
+          // Deuxième conteneur - Colors.blue
+          Expanded(
+            child: Container(
+              color:Colors.blue,
+            ),
+          ),
+          
+          // Troisième conteneur - Color.fromARGB(255, 237, 18, 18)
+          Expanded(
+            child: Container(
+              color: const Color.fromARGB(255, 237, 18, 18),
+            ),
+          ),
+        ],
       ),
     );
   }

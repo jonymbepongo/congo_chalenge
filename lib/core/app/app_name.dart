@@ -4,7 +4,7 @@ abstract class AppName{
   // static const String logoPath = 'assets/logo_napiland.png';
   static const String ipAdressecloud = '207.180.227.56';
   static const String ipAdresse = '192.168.0.2';
-  static const String url = "http://$ipAdressecloud:8080/auth?mode=app";
+  // static const String url = "http://$ipAdressecloud:8080/auth?mode=app";
   static const String baseUrl="http://$ipAdressecloud:3001/api";
   
   // static const String leafLoading='assets/lottie/leafloading.gif';
@@ -17,5 +17,7 @@ abstract class AppName{
 
 
   static const String ImageHero = 'assets/hero-bg.jpg';
+  static const String ImageConcert = 'assets/concert.jfif';
+  static const String ImageLogo = 'assets/ic_launcher.png';
 
 }

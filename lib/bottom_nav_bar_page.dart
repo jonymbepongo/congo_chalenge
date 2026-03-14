@@ -1,4 +1,5 @@
 import 'package:congo_chalenge/core/app/app_colors.dart';
+import 'package:congo_chalenge/feature/artiste/view/artist_view.dart';
 import 'package:congo_chalenge/feature/home/home_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,7 +17,7 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
   // ignore: constant_identifier_names, non_constant_identifier_names
   final List MesPages = [
     HomeView(),
-    Center(child: Text('page d\'artiste')),
+    ArtistView(),
     // null,
     Center(child: Text('page de la competition')),
     Center(child: Text('profile')),

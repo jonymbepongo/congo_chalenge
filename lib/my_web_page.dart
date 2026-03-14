@@ -10,26 +10,20 @@
 
 //   MyWebView({super.key});
 
-//   final WebGetXController controller =
-//       Get.put(WebGetXController(AppName.url));
+//   // final WebGetXController controller =
+//   //     Get.put(WebGetXController(AppName.url));
 
 //   @override
 //   Widget build(BuildContext context) {
 
 //     return Scaffold(
-//   backgroundColor: Colors.transparent,
-//   appBar: AppBar(
-//     title: const Text("Bienvenue"),
-//     centerTitle: true,
-//     backgroundColor: Colors.blue, // même couleur que BodyArrondi si tu veux effet seamless
-//     shape: const RoundedRectangleBorder(
-//       borderRadius: BorderRadius.vertical(
-//         bottom: Radius.circular(25),
+//       appBar: AppBar(
+//         title: const Text("Bienvenue"),
+//         centerTitle: true,
 //       ),
-//     ),
-//   ),
 
 //       body: BodyArrondi(
+        
 //   content: Obx(() {
 
 //     /// pas internet
@@ -45,14 +39,8 @@
 //     return Stack(
 //       children: [
 
-//         Container(
-//           decoration: const BoxDecoration(
-//       color: Colors.white,
-//       borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
-//     ),
-//           child: WebViewWidget(
-//             controller: controller.webController,
-//           ),
+//         WebViewWidget(
+//           controller: controller.webController,
 //         ),
 
 //         if (controller.isLoading.value)
