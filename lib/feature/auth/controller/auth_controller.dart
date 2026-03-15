@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:congo_chalenge/core/service/api_service.dart';
 import 'package:congo_chalenge/core/utils/logger.dart';
 
+import '../../../core/app/app_colors.dart';
 import '../repository/auth_repository.dart';
 
 class AuthController extends GetxController {
@@ -83,9 +84,11 @@ Future<void> login({
     await cache.saveCache("user", userData);
     await cache.saveCache("roles", rolesData);
 
-    Get.offAllNamed(AppRoutes.accueil);
+    Get.offAllNamed(AppRoutes.bottomNavBar);
 
   } catch (e) {
+
+    Get.snackbar("probleme", e.toString());
 
     rethrow;
 
@@ -96,6 +99,181 @@ Future<void> login({
   }
 
 }
+// Future<void> register({
+//   required String username,
+//   required String email,
+//   required String phone,
+//   required String password,
+// }) async {
+
+//   isLoading.value = true;
+
+//   try {
+
+//     final response = await repository.register({
+//       "username": username,
+//       "email": email,
+//       "phone": phone,
+//       "password": password,
+//     });
+
+//     if (response["success"] == true) {
+
+//       final emailResponse = response["data"]["email"];
+
+//       /// navigation vers confirm view
+//       Get.toNamed(
+//         AppRoutes.confirmEmail,
+//         arguments: {
+//           "email": emailResponse,
+//         },
+//       );
+
+//     }
+
+//   } catch (e) {
+
+//     Get.snackbar(
+//       "Erreur inscription",
+//       e.toString(),
+//       snackPosition: SnackPosition.BOTTOM,
+//     );
+//     AppLogger.error("Erreur inscription: $e");
+
+//   } finally {
+
+//     isLoading.value = false;
+
+//   }
+Future<void> register({
+  required String username,
+  required String email,
+  required String phone,
+  required String password,
+}) async {
+  isLoading.value = true;
+
+  try {
+    final response = await repository.register({
+      "username": username,
+      "email": email,
+      "phone": phone,
+      "password": password,
+    });
+
+    if (response["success"] == true) {
+      // stocker temporairement email et mot de passe pour login auto après verification
+      await cache.saveCache("temp_email", email);
+      await cache.saveCache("temp_password", password);
+
+      final emailResponse = response["data"]["email"];
+
+      // navigation vers confirm view
+      Get.toNamed(
+        AppRoutes.confirmEmail,
+        arguments: {"email": emailResponse},
+      );
+    }
+
+  } catch (e) {
+    Get.snackbar("Erreur inscription", e.toString(), snackPosition: SnackPosition.BOTTOM);
+    AppLogger.error("Erreur inscription: $e");
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+Future<void> verifyEmail({
+  required String email,
+  required String code,
+}) async {
+  isLoading.value = true;
+
+  try {
+    final response = await repository.verifyEmail(
+      email: email,
+      code: code,
+    );
+
+    if (response['success'] == true) {
+      final emailVerified = response['verificationStatus']['email']['verified'] ?? false;
+       final phoneVerified = response['verificationStatus']['phone']['verified'] ?? false;
+      if (emailVerified) {
+        // Récupérer email et mot de passe temporaire
+        final tempEmail = await cache.getCache("temp_email");
+        final tempPassword = await cache.getCache("temp_password");
+
+        if (tempEmail != null && tempPassword != null) {
+          // LOGIN automatique
+          await login(email: tempEmail, password: tempPassword);
+          AppLogger.log("Login automatique après vérification réussie");
+
+          // Supprimer les infos temporaires
+          await cache.removeCache("temp_email");
+          await cache.removeCache("temp_password");
+        } else {
+          // si pas dispo, rediriger vers login
+          Get.offAllNamed(AppRoutes.login);
+          Get.snackbar("Info", "Email vérifié, veuillez vous connecter.");
+          AppLogger.error("Vérification réussie mais infos temporaires manquantes");
+        }
+      } else {
+        Get.snackbar("Erreur", "Email non vérifié.");
+        AppLogger.error("Vérification échouée: email non vérifié");
+      }
+
+    } else {
+      Get.snackbar("Erreur", response['message'] ?? "Erreur inconnue");
+    }
+
+  } catch (e) {
+    Get.snackbar("Erreur", e.toString());
+    AppLogger.error("Erreur vérification email: $e");
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+// Future<void> verifyEmail({
+//   required String email,
+//   required String code,
+// }) async {
+//   isLoading.value = true;
+
+//   try {
+//     final response = await repository.verifyEmail(
+//       email: email,
+//       code: code,
+//     );
+
+//     // vérifier si la requête a réussi
+//     if (response['success'] == true) {
+//       final emailVerified = response['verificationStatus']['email']['verified'] ?? false;
+//      final phoneVerified = response['verificationStatus']['phone']['verified'] ?? false;
+
+//       if (emailVerified) {
+//         // Naviguer vers l'écran principal ou la suite
+//         Get.offAllNamed(AppRoutes.bottomNavBar);
+//         Get.snackbar(
+//           "Succès",
+//           'Bienvenue dans la compétition !',
+//           backgroundColor: AppColor.primary,
+//           snackPosition: SnackPosition.TOP,
+//         );
+//       } else {
+//         Get.snackbar("Erreur", "Email non vérifié.");
+//       }
+//     } else {
+//       Get.snackbar("Erreur", response['message'] ?? "Erreur inconnue");
+//     }
+
+//   } catch (e) {
+//     Get.snackbar("Erreur", e.toString());
+//     AppLogger.error("Erreur vérification email: $e");
+//   } finally {
+//     isLoading.value = false;
+//   }
+// }
 
 
   /// GET PROFILE

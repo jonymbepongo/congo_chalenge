@@ -6,7 +6,7 @@ class AppColor {
   static const Color secondary = Color(0xFFFFC107);     // Or pour les trophées et boutons d'action
 
   // 🌑 Thème Sombre (Le Coeur de l'application)
-  static const Color background = Color.fromARGB(255, 4, 1, 53);  // Fond principal (très sombre)
+  static const Color background = const Color(0xFF0A1B3F);  // Fond principal (très sombre)
   static const Color surface = Color(0xFF1E1E1E);     // Fond des cartes, dialogues, inputs
   static const Color card = Color(0xFF252525);        // Légère élévation pour les listes d'artistes
 

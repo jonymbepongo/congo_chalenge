@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
         children:[
           AppBar(
             backgroundColor: AppColor.background,
-            title: Text('Bienvenue  ${user['username'] ?? 'jony'}' ),
+            title: Text('Bienvenue ${user['username'] ?? ''}' ),
             centerTitle: false,
             actions: [
               IconButton(
@@ -71,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                   child: Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.black.withValues(alpha: 0.4),
+                      color: Colors.black.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: Column(
@@ -100,9 +100,10 @@ class _HomeViewState extends State<HomeView> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFFC107),
                             foregroundColor: Colors.black,
-                            minimumSize: const Size(double.infinity, 48),
+
+                            minimumSize: const Size(double.infinity, 45),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(15),
                             ),
                             elevation: 0,
                           ),

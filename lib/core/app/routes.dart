@@ -1,15 +1,19 @@
 import 'package:congo_chalenge/bottom_nav_bar_page.dart';
 import 'package:congo_chalenge/feature/artiste/view/artist_view.dart';
+import 'package:congo_chalenge/feature/auth/page/inscritiption_view.dart';
 import 'package:congo_chalenge/feature/auth/page/login_view.dart';
 import 'package:congo_chalenge/feature/home/home_view.dart';
 import 'package:get/get.dart';
 
+import '../../feature/auth/page/confirm_view.dart';
 import '../../splash_view.dart';
 
 class AppRoutes {
   static const String initial = '/';
   static const String bottomNavBar = '/bottom-nav-bar';
   static const String login = '/login';
+  static const register='/register';
+  static const confirmEmail = "/confirm-email";
   static const String accueil = '/accueil';
   static const String competition = '/competition';
   static const String artiste = '/artiste';
@@ -39,12 +43,22 @@ class AppRoutes {
       page: () => const LoginView(),
       transition: Transition.noTransition,
     ),
-
+    GetPage(
+      name: register,
+      page: () => const InscriptionView(),
+      transition: Transition.noTransition,
+    ),
+    GetPage(
+  name: AppRoutes.confirmEmail,
+  page: () => const ConfirmView(),
+),
     GetPage(
   name: AppRoutes.artiste,
   page: () => ArtistView(),
   transition: Transition.rightToLeft
 ),
+
+
 
     /*GetPage(
       name: profil,

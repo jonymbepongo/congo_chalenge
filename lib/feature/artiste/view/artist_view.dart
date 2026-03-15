@@ -15,7 +15,7 @@ class ArtistView extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Artistes"),
+        title: const Text("Liste des Candidats"),
         centerTitle: true,
       ),
 

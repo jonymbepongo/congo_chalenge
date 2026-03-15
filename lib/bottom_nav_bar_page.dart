@@ -51,11 +51,11 @@ class _BottomNavBarState extends State<BottomNavBarPage> {
                 label: 'Acuueil',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.category_rounded),
-                label: 'Artiste',
+                icon: Icon(Icons.star_rounded), // Changé de person_3_rounded à star
+                label: 'Candidat',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.analytics_rounded),
+                icon: Icon(Icons.emoji_events),
                 label: 'competition',
               ),
               BottomNavigationBarItem(

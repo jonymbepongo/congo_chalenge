@@ -54,6 +54,32 @@ class AuthRepository {
       rethrow;
     }
   }
+  /// VERIFY EMAIL
+Future<Map<String, dynamic>> verifyEmail({
+  required String email,
+  required String code,
+}) async {
+
+  try {
+
+    final response = await api.post(
+      "/auth/verify-email",
+      {
+        "email": email,
+        "code": code,
+      },
+    );
+
+    return response;
+
+  } catch (e) {
+
+    AppLogger.error("Erreur verify email: $e");
+
+    rethrow;
+
+  }
+}
 
   /// PROFILE
   Future<Map<String, dynamic>> getProfile() async {
